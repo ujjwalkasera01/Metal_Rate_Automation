@@ -1,14 +1,14 @@
 {
   "version": 2,
   "functions": {
-    "app.py": {
-      "runtime": "vercel-python@0.5.2" 
+    "api/app.py": {
+      "runtime": "vercel-python@0.5.2"
     }
   },
   "routes": [
     {
       "src": "/api/bot",
-      "dest": "/app.py"
+      "dest": "/api/app.py"
     }
   ]
 }
