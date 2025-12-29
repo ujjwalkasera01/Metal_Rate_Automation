@@ -2,14 +2,13 @@
   "version": 2,
   "functions": {
     "app.py": {
-      "runtime": "python3.11",
-      "maxDuration": 60
+      "runtime": "vercel-python@0.5.2" 
     }
   },
   "routes": [
     {
       "src": "/api/bot",
-      "dest": "app.py"
+      "dest": "/app.py"
     }
   ]
 }
