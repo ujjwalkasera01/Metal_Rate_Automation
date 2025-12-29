@@ -1,4 +1,3 @@
-import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from fastapi import FastAPI, Request
@@ -7,8 +6,14 @@ from telegram.ext import Dispatcher, MessageHandler, Filters
 import uvicorn
 import os
 
+from dotenv import load_dotenv
+
+# Load variables from .env file
+load_dotenv()
+
+
 # ---------------- ENVIRONMENT VARIABLES (IMPORTANT) ----------------
-BOT_TOKEN = os.environ.get("BOT_TOKgEN")  # Store in env, not in code!
+BOT_TOKEN = os.environ.get("BOT_TOKEN")  # Store in env, not in code!
 # For now, hardcode if needed but later remove:
 # BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 
