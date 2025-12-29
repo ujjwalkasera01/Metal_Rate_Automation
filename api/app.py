@@ -5,6 +5,7 @@ from telegram import Update, Bot
 from telegram.ext import Dispatcher, MessageHandler, Filters
 import uvicorn
 import os
+import json
 
 from dotenv import load_dotenv
 
@@ -22,7 +23,8 @@ bot = Bot(token=BOT_TOKEN)
 # ---------------- GOOGLE SHEET SETUP ----------------
 scope = ["https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("cred.json", scope)
+google_creds = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+creds = ServiceAccountCredentials.from_json_keyfile_dict(google_creds, scope)
 client = gspread.authorize(creds)
 sheet = client.open("Metal Price Auto Sheet").sheet1
 
