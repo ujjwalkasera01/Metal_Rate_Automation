@@ -73,11 +73,12 @@ def handle(update, context):
         return
 
     existing = sheet.get_all_values()
+    print(existing)
     if len(existing) == 0:
         sheet.append_row(HEADER)
-    # elif existing[0] != HEADER:
-    #     sheet.delete_rows(1)
-    #     sheet.insert_row(HEADER, 1)
+    elif existing[0] != HEADER:
+        sheet.delete_rows(1)
+        sheet.insert_row(HEADER, 1)
 
     row = extract_prices(msg.text)
     if any(row[2:]):  
