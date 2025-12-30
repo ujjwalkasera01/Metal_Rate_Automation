@@ -86,26 +86,62 @@ def extract_prices(text):
         m = re.search(pattern, text)
         return clean(m.group(1)) if m else ""
 
+    # def find_pair(pattern):
+    #     m = re.search(pattern, text)
+    #     if not m: return ("","")
+    #     return (clean(m.group(1)), clean(m.group(2)) if len(m.groups())>1 and m.group(2) else "")
+
     def find_pair(pattern):
         m = re.search(pattern, text)
+        if not m:
+            return ("","")
+        
+        v1 = clean(m.group(1))
+        v2 = ""
+
+        # If the second group exists and has digits → clean it
+        if len(m.groups()) > 1 and m.group(2):
+            v2 = clean(m.group(2))
+        
+        # If the value came like "1141/1233" in group(1)
+        if "/" in m.group(1) or "+" in m.group(1):
+            parts = re.split(r"[/+]", m.group(1))
+            if len(parts) >= 2:
+                v1 = clean(parts[0])
+                v2 = clean(parts[1])
+        
+        return (v1, v2)
+    
+    def find_mm(pattern):
+        m = re.search(pattern, text)
+        return clean(m.group(1)) if m else ""
+
+    def find_mm_pair(pattern):
+        m = re.search(pattern, text)
         if not m: return ("","")
-        return (clean(m.group(1)), clean(m.group(2)) if len(m.groups())>1 and m.group(2) else "")
+        return (clean(m.group(1)), clean(m.group(2)) if m.group(2) else "")
+
+
 
     # ---------- Copper (with 1.6MM extraction) ----------
     arm_bhatti = find(r"Armature\s*\(Bhatti\)\s*:\s*(\d+)")
     arm_plant = find_pair(r"Armature\s*\(Plant\)\s*:\s*([\d\/]+)\s*([\d\/]+)?")
 
     kaliya = find(r"Kaliya\s*\(Zero\)\s*Rod\s*:\s*(\d+)")
-    kaliya_mm = find(r"Kaliya\s*\(Zero\)\s*Rod\s*:\s*\d+\s*\(1\.6MM\s*:\s*(\d+)")
+    # kaliya_mm = find(r"Kaliya\s*\(Zero\)\s*Rod\s*:\s*\d+\s*\(1\.6MM\s*:\s*(\d+)")
+    kaliya_mm = find_mm(r"Kaliya.*1\.6MM\s*:\s*(\d+)")
     
     super_d = find(r"Super D Rod\s*:\s*(\d+)")
-    super_d_mm = find(r"Super D Rod\s*:\s*\d+\s*\(1\.6MM\s*:\s*(\d+)")
+    # super_d_mm = find(r"Super D Rod\s*:\s*\d+\s*\(1\.6MM\s*:\s*(\d+)")
+    super_d_mm = find_mm(r"Super D Rod.*1\.6MM\s*:\s*(\d+)")
 
     ccr = find_pair(r"CCR Rod\s*:\s*([\d\/]+)\s*([\d\/]+)?")
-    ccr_mm = find_pair(r"CCR Rod.*1\.6MM\s*:\s*([\d\/]+)\s*([\d\/]+)?")
+    # ccr_mm = find_pair(r"CCR Rod.*1\.6MM\s*:\s*([\d\/]+)\s*([\d\/]+)?")
+    ccr_mm = find_mm_pair(r"CCR Rod.*1\.6MM\s*:\s*([\d\/+]+)\s*([\d\/+]+)?")
 
     cc = find_pair(r"CC Rod\s*:\s*([\d\/]+)\s*([\d\/]+)?")
-    cc_mm = find_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/]+)\s*([\d\/]+)?")
+    cc_mm = find_mm_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/+]+)\s*([\d\/+]+)?")
+    # cc_mm = find_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/]+)\s*([\d\/]+)?")
 
     # ---------- Aluminium ----------
     purja_local = find(r"Purja\s*\(Local\)\s*:\s*(\d+)")
@@ -144,8 +180,11 @@ def extract_prices(text):
     cadmium = find(r"CADMIUM\s*:\s*(\d+)")
 
     # ---------- Date & Time ----------
-    date = find(r"DATE\s*:\s*(.*)")
-    time = find(r"TIME\s*:\s*(.*)")
+    date = re.search(r"DATE\s*:\s*([^\n]+)", text)
+    time = re.search(r"TIME\s*:\s*([^\n]+)", text)
+
+    date = date.group(1).strip() if date else ""
+    time = time.group(1).strip() if time else ""
 
     return [
         date, time,
