@@ -29,16 +29,33 @@ client = gspread.authorize(creds)
 sheet = client.open("Metal Price Auto Sheet").sheet1
 
 # ---------------- HEADERS (same as your working code) ----------------
-HEADER = ["Date","Time","Armature Bhatti","Armature Plant Min","Armature Plant Max",
-"Кaliya Zero","Super D","CCR Min","CCR Max","CC Min","CC Max",
+# HEADER = ["Date","Time","Armature Bhatti","Armature Plant Min","Armature Plant Max",
+# "Кaliya Zero","Super D","CCR Min","CCR Max","CC Min","CC Max",
+# "Aluminium Purja Local","Aluminium Purja Engine","Utensils Scrap","Sheet Scrap",
+# "Wire Scrap","Company Ingot","Local Rod","Company Rod",
+# "Zinc Dross Min","Zinc Dross Max","HG Iran","SHG Iran","PMI Delhi Min","PMI Delhi Max","HZL Delhi",
+# "Brass Purja Min","Brass Purja Max","Brass Chadri Min","Brass Chadri Max","Brass Honey Min","Brass Honey Max",
+# "Lead Battery Black","Lead Battery White Min","Lead Battery White Max","Lead Ingot",
+# "Steel Bartan","SS 202","SS 304","SS 316",
+# "Nickel Min","Nickel Max","Tin Min","Tin Max","Cadmium"
+# ]
+
+HEADER = [
+"Date","Time",
+"Armature Bhatti","Armature Plant Min","Armature Plant Max",
+"Kaliya Zero","Kaliya Zero 1.6MM",
+"Super D","Super D 1.6MM",
+"CCR Min","CCR Max","CCR 1.6MM Min","CCR 1.6MM Max",
+"CC Min","CC Max","CC 1.6MM Min","CC 1.6MM Max",
 "Aluminium Purja Local","Aluminium Purja Engine","Utensils Scrap","Sheet Scrap",
-"Wire Scrap","Company Ingot","Local Rod","Company Rod",
+"Wire Scrap","Company Ingot","Local Rod Min","Local Rod Max","Company Rod",
 "Zinc Dross Min","Zinc Dross Max","HG Iran","SHG Iran","PMI Delhi Min","PMI Delhi Max","HZL Delhi",
 "Brass Purja Min","Brass Purja Max","Brass Chadri Min","Brass Chadri Max","Brass Honey Min","Brass Honey Max",
 "Lead Battery Black","Lead Battery White Min","Lead Battery White Max","Lead Ingot",
 "Steel Bartan","SS 202","SS 304","SS 316",
 "Nickel Min","Nickel Max","Tin Min","Tin Max","Cadmium"
 ]
+
 
 from script_logic import extract_prices  # we move your extraction there
 
@@ -58,9 +75,9 @@ def handle(update, context):
     existing = sheet.get_all_values()
     if len(existing) == 0:
         sheet.append_row(HEADER)
-    elif existing[0] != HEADER:
-        sheet.delete_rows(1)
-        sheet.insert_row(HEADER, 1)
+    # elif existing[0] != HEADER:
+    #     sheet.delete_rows(1)
+    #     sheet.insert_row(HEADER, 1)
 
     row = extract_prices(msg.text)
     if any(row[2:]):  
