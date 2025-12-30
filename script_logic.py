@@ -156,7 +156,6 @@ def extract_prices(text):
     ccr_mm = find_mm_pair(r"CCR Rod.*1\.6MM\s*:\s*([\d\/+]+)\s*([\d\/+]+)?")
 
     cc = find_pair(r"CC Rod\s*:\s*([\d\/]+)\s*([\d\/]+)?")
-    cc_mm = find_mm_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/+]+)\s*([\d\/+]+)?")
 
     # ---------- Aluminium ----------
     purja_local = find(r"Purja\s*\(Local\)\s*:\s*(\d+)")
@@ -207,7 +206,7 @@ def extract_prices(text):
         kaliya, kaliya_mm,
         super_d, super_d_mm,
         ccr[0], ccr[1], ccr_mm[0], ccr_mm[1],
-        cc[0], cc[1], cc_mm[0], cc_mm[1],
+        cc[0], cc[1],
         purja_local, purja_engine, utensil, sheet_scrap,
         wire, ingot, local_rod[0], local_rod[1], comp_rod,
         dross[0], dross[1], hg, shg, pmi[0], pmi[1], hzl,
