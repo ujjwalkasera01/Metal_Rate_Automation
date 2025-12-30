@@ -46,7 +46,7 @@ HEADER = [
 "Kaliya Zero","Kaliya Zero 1.6MM",
 "Super D","Super D 1.6MM",
 "CCR Min","CCR Max","CCR 1.6MM Min","CCR 1.6MM Max",
-"CC Min","CC Max","CC 1.6MM Min","CC 1.6MM Max",
+"CC Min","CC Max",
 "Aluminium Purja Local","Aluminium Purja Engine","Utensils Scrap","Sheet Scrap",
 "Wire Scrap","Company Ingot","Local Rod Min","Local Rod Max","Company Rod",
 "Zinc Dross Min","Zinc Dross Max","HG Iran","SHG Iran","PMI Delhi Min","PMI Delhi Max","HZL Delhi",
