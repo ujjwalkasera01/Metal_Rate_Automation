@@ -73,7 +73,6 @@ def handle(update, context):
         return
 
     existing = sheet.get_all_values()
-    print(existing)
     if len(existing) == 0:
         sheet.append_row(HEADER)
     elif existing[0] != HEADER:

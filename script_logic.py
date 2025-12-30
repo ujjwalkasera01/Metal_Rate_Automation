@@ -118,8 +118,24 @@ def extract_prices(text):
 
     def find_mm_pair(pattern):
         m = re.search(pattern, text)
-        if not m: return ("","")
-        return (clean(m.group(1)), clean(m.group(2)) if m.group(2) else "")
+        if not m:
+            return ("","")
+        
+        v1 = clean(m.group(1))
+        v2 = ""
+
+        # If the second group exists and has digits → clean it
+        if len(m.groups()) > 1 and m.group(2):
+            v2 = clean(m.group(2))
+        
+        # If the value came like "1141/1233" in group(1)
+        if "/" in m.group(1) or "+" in m.group(1):
+            parts = re.split(r"[/+]", m.group(1))
+            if len(parts) >= 2:
+                v1 = clean(parts[0])
+                v2 = clean(parts[1])
+        
+        return (v1, v2)
 
 
 
@@ -141,7 +157,6 @@ def extract_prices(text):
 
     cc = find_pair(r"CC Rod\s*:\s*([\d\/]+)\s*([\d\/]+)?")
     cc_mm = find_mm_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/+]+)\s*([\d\/+]+)?")
-    # cc_mm = find_pair(r"CC Rod.*1\.6MM\s*:\s*([\d\/]+)\s*([\d\/]+)?")
 
     # ---------- Aluminium ----------
     purja_local = find(r"Purja\s*\(Local\)\s*:\s*(\d+)")
